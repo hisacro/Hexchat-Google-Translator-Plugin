@@ -19,7 +19,7 @@ mkdir if addons does not exist
 
 *note: Right clicking on channel or user will promt the menu and [+] or [-] autotranslate option will add them to watchlist, default from, to languages are used.*
 
-Adding channels to the watch list for automatic translations.  If tar  get language is not specified, then the DEFAULT LANG set will be used. If source language is not specified, then language detection will be used.
+Adding channels to the watch list for automatic translations.  If target language is not specified, then the DEFAULT_LANG set will be used. If source language is not specified, then language detection will be used.
 
 ```
 /ADDTRC <channel> <target_language> <source_language>

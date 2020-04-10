@@ -18,7 +18,7 @@ import os
 # ############################
 
 __module_name__ = "google translator"
-__module_version__ = "1.1"
+__module_version__ = "1.2"
 __module_description__ = "Translates from one language to others using Google Translate."
 __module_author__ = "EpicJhon"
 
@@ -37,8 +37,8 @@ ReverseColor = '\026'
 Beep = '\007'
 Italics = '\035'
 
-default_from = 'de'
-default_to = 'en'
+default_from = 'en'
+default_to = 'es'
 
 AUTOUSER = {}
 AUTOCHANNEL = {}
@@ -88,14 +88,16 @@ def translate(message, _from=default_from, to=default_to):
 #
 # ############################
 
+#  watchlist AUTOCHANNEL and AUTOUSER
 def worker_hook_print_message(context, message, nick, _from=default_from, to=default_to):
     # translate message
     translation = translate(message, _from, to)
     # context.prnt(nick + NormalText + Color + '08 ' + translation)
+    # chucked out nick_name for neat viewing 
     context.prnt(NormalText + Color + '08' + translation)
 
 
-# changed
+# "@@" and /TR
 def worker_hook_tr(message, _from=default_from, to=default_to):
     # translate message
     translation = translate(message, _from, to)
@@ -103,7 +105,7 @@ def worker_hook_tr(message, _from=default_from, to=default_to):
     print(NormalText + Color + '08' + translation)
 
 
-# translate your message and send to server
+# "!!" translate your message and send to server
 def worker_hook_str(context, message, _from=default_from, to=default_to):
     # translate message
     final_text = translate(message, to, _from)
@@ -314,7 +316,7 @@ help_message = '/STR <message> - sends a message translated according to form "t
 hexchat.hook_command('STR', hook_str, help=help_message, priority=hexchat.PRI_HIGHEST)
 
 hexchat.hook_command('', hook_say, priority=hexchat.PRI_HIGHEST)
-/TRA <source language> <target language> <message>
+
 # prints
 
 hexchat.hook_print('Private Message to Dialog', hook_print_message, priority=hexchat.PRI_HIGHEST)

@@ -173,7 +173,6 @@ def hook_add_user(word, word_eol, userdata):
 
     return hexchat.EAT_ALL
 
-
 def hook_remove_user(word, word_eol, userdata):
     if len(word) < 2:
         hexchat.prnt("You must specify a user.")

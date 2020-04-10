@@ -222,7 +222,7 @@ def hook_tra(word, word_eol, userdata):
 def hook_str(word, word_eol, userdata):
     message = word_eol[1]
     context = hexchat.get_context()
-    print(Bold + hexchat.get_info('nick') + NormalText + Color + '08 > ' + message)
+    print(Bold + hexchat.get_info('nick') + NormalText + Color + '08> ' + message)
     threading.Thread(target=worker_hook_str, args=(context, message,)).start()
     return hexchat.EAT_ALL
 

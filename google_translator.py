@@ -37,8 +37,8 @@ ReverseColor = '\026'
 Beep = '\007'
 Italics = '\035'
 
-default_from = 'en'
-default_to = 'es'
+default_from = 'de'
+default_to = 'en'
 
 AUTOUSER = {}
 AUTOCHANNEL = {}
@@ -91,13 +91,16 @@ def translate(message, _from=default_from, to=default_to):
 def worker_hook_print_message(context, message, nick, _from=default_from, to=default_to):
     # translate message
     translation = translate(message, _from, to)
-    context.prnt(Bold + nick + NormalText + Color + '08 ' + translation)
+    # context.prnt(nick + NormalText + Color + '08 ' + translation)
+    context.prnt(NormalText + Color + '08' + translation)
 
 
+# changed
 def worker_hook_tr(message, _from=default_from, to=default_to):
     # translate message
     translation = translate(message, _from, to)
-    print(Bold + hexchat.get_info('nick') + NormalText + Color + '08 ' + translation)
+    # print(Bold + hexchat.get_info('nick') + NormalText + Color + '08 ' + translation)
+    print(NormalText + Color + '08' + translation)
 
 
 # translate your message and send to server
@@ -222,35 +225,49 @@ def hook_str(word, word_eol, userdata):
     threading.Thread(target=worker_hook_str, args=(context, message,)).start()
     return hexchat.EAT_ALL
 
-
+##   user input ## 
 def hook_say(word, word_eol, userdata):
     message = hexchat.strip(word_eol[0])
     channel = hexchat.get_info('channel')
     context = hexchat.get_context()
 
     key = hexchat.get_info('network') + ' ' + channel.lower()
-
+    # !! shortcut for sending message in other language
     if key in AUTOCHANNEL and message[:2] == '!!':
-        print(Bold + hexchat.get_info('nick') + NormalText + Color + '13 > ' + message[2:])
+        print(NormalText + Color + '13 > ' + message[2:])
         dest_lang, src_lang = AUTOCHANNEL[key]
         threading.Thread(target=worker_hook_str, args=(context, message[2:], src_lang, dest_lang)).start()
+        return hexchat.EAT_ALL
+    # @@ shortcut for translating the message if channel or user not in the list 
+    if message[:2] == '@@':
+        worker_hook_tr(message[2:])
         return hexchat.EAT_ALL
 
     return hexchat.EAT_NONE
 
-
+#   output from other users
 def hook_print_message(word, word_eol, userdata):
     nick = hexchat.strip(word[0])
     message = hexchat.strip(word[1])
     channel = hexchat.get_info('channel')
     context = hexchat.get_context()
 
-    key = hexchat.get_info('network') + ' ' + channel + ' ' + nick.lower()
+    # AUTOCHANNEL Check
+    key = hexchat.get_info('network') + ' ' + channel.lower()
+
+    if key in AUTOCHANNEL: 
+        dest_lang, src_lang = AUTOCHANNEL[key] 
+        threading.Thread(target=worker_hook_print_message, args=(context, message, nick, src_lang, dest_lang)).start()
+        #worker_hook_tr(message,'de','en')
+        #worker_hook_print_message(context, message, nick, src_lang, dest_lang)
+        return hexchat.EAT_NONE
+
+    # AUTOUSER Check
+    key_user = hexchat.get_info('network') + ' ' + channel + ' ' + nick.lower()
 
     if key in AUTOUSER:
-        dest_lang, src_lang = AUTOUSER[key]
-        threading.Thread(target=worker_hook_print_message, args=(context, message, nick, src_lang, dest_lang)).start()
-
+        dest_lang, src_lang = AUTOUSER[key_user]
+        worker_hook_tr(message, src_lang, dest_lang)
     return hexchat.EAT_NONE
 
 
@@ -267,11 +284,11 @@ def hook_unload(userdata):
 # commands
 
 hexchat.command('MENU ADD "$TAB/[+] AutoTranslate" "ADDTRC %s"')
-help_message = '/ADDTR <channel> <target_language> <source_language> - adds the channel to the watch list for automatic translations.  If target_language is not specified, then the DEFAULT_LANG set will be used.  If source_language is not specified, then language detection will be used. Starts your message with "!!" to auto translate.'
+help_message = '/ADDTRC <channel> <target_language> <source_language> - adds the channel to the watch list for automatic translations.  If target_language is not specified, then the DEFAULT_LANG set will be used.  If source_language is not specified, then language detection will be used. Starts your message with "!!" to auto translate.'
 hexchat.hook_command('ADDTRC', hook_add_channel, help=help_message, priority=hexchat.PRI_HIGHEST)
 
 hexchat.command('MENU ADD "$TAB/[-] AutoTranslate" "RMTRC %s"')
-help_message = '/RMTR <channel> - removes channel from the watch list for automatic translations.'
+help_message = '/RMTRC <channel> - removes channel from the watch list for automatic translations.'
 hexchat.hook_command('RMTRC', hook_remove_channel, help=help_message, priority=hexchat.PRI_HIGHEST)
 
 hexchat.command('MENU ADD "$NICK/[+] AutoTranslate" "ADDTR %s"')
@@ -298,12 +315,12 @@ help_message = '/STR <message> - sends a message translated according to form "t
 hexchat.hook_command('STR', hook_str, help=help_message, priority=hexchat.PRI_HIGHEST)
 
 hexchat.hook_command('', hook_say, priority=hexchat.PRI_HIGHEST)
-
+/TRA <source language> <target language> <message>
 # prints
 
 hexchat.hook_print('Private Message to Dialog', hook_print_message, priority=hexchat.PRI_HIGHEST)
-hexchat.hook_print('Channel Message', hook_print_message, priority=hexchat.PRI_HIGHEST)
-hexchat.hook_print('Channel Msg Hilight', hook_print_message, priority=hexchat.PRI_HIGHEST)
+hexchat.hook_print("Channel Message", hook_print_message, priority=hexchat.PRI_HIGHEST)
+hexchat.hook_print("Channel Msg Hilight", hook_print_message, priority=hexchat.PRI_HIGHEST)
 
 # unload
 

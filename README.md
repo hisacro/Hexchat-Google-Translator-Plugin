@@ -60,6 +60,11 @@ For sending messages in target language to a users or in channel (already in wat
 # > no
 # then sends the translated message to the channel 
 nein
+
+# user_mention exception when input starts with !!@
+!!@chair123, this should work
+# output to server
+@chair123, das sollte funktionieren
 ```
 
 For translating the message when user or channel not in watchlist, starthe message with "@@" this will use the default source and target language. 
@@ -77,12 +82,12 @@ Sí
 # equivalent to starting the message with "@@"
 /TR <message>
 ```
-Translates message into the language according to form "to-from".  Thisauto detects the source language
+Translates message into the language according to form "to-from".  <del>This auto detects the source language</del>
 
 ```
 /TRA <source language> <target language> <message>
 ```
-Translates message into the language specified.  This auto detects the source language.'
+Translates message into the language specified.  <del>This auto detects the source language.'</del>
 
 ```
 /STR <message>

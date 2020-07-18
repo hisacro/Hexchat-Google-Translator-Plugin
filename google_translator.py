@@ -92,7 +92,8 @@ def translate(message, _from=default_from, to=default_to):
 def worker_hook_print_message(context, message, nick, _from=default_from, to=default_to):
     # translate message
     translation = translate(message, _from, to)
-    # context.prnt(nick + NormalText + Color + '08 ' + translation)
+    # delete above line and uncomment next for auto detect 'from' language
+    # translation = translate(message,'',to)
     # chucked out nick_name for neat viewing 
     context.prnt(NormalText + Color + '08' + translation)
 

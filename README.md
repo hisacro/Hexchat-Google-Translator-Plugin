@@ -78,7 +78,7 @@ For translating the message when user or channel not in watchlist, star the mess
 Sí
 ```
 
-For auto detecting 'from' language for users and channels under watchlist, edit translation variable under function [worker_hook_print_message](https://github.com/hisacro/Hexchat-Google-Translator-Plugin/blob/master/google_translator.py#L91)
+Auto detecting 'from' language for users and channels under watchlist, edit translation variable under function [worker_hook_print_message](https://github.com/hisacro/Hexchat-Google-Translator-Plugin/blob/master/google_translator.py#L91)
 
 ```
 # translation varibale

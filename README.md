@@ -14,12 +14,14 @@ Place google_translator.py and trnaslate.py in /home/user/.config/hexchat/addons
 
 mkdir if addons does not exist
 
+language codes can be found [here](https://meta.wikimedia.org/wiki/Template:List_of_language_names_ordered_by_code)
+
 # Usage
 
 
-*note: Right clicking on channel or user will promt the menu and [+] or [-] autotranslate option will add them to watchlist, default from, to languages are used.*
+*note: Right clicking on channel or user will promt the menu. [+] [-] autotranslate option will add them to watchlist. Default from, to languages are used.*
 
-Adding channels to the watch list for automatic translations.  If target language is not specified, then the DEFAULT_LANG set will be used. If source language is not specified, then language detection will be used.
+Adding channels to  watch list for auto translations.  If target language is not specified, then the DEFAULT_LANG set will be used. If source language is not specified, then language detection will be used.
 
 ```
 /ADDTRC <channel> <target_language> <source_language>
@@ -67,13 +69,20 @@ nein
 @chair123, das sollte funktionieren
 ```
 
-For translating the message when user or channel not in watchlist, starthe message with "@@" this will use the default source and target language. 
+For translating the message when user or channel not in watchlist, star the message with "@@" this will use the default source and target language. 
 
 ```
 # default source is 'en' and target is 'es' (these lines can be modified in google_translator.py) 
 @@yes
 # promt output (only visible on user side)
 Sí
+```
+
+For auto detecting 'from' language for users and channels under watchlist, edit translation variable under function [worker_hook_print_message](https://github.com/hisacro/Hexchat-Google-Translator-Plugin/blob/master/google_translator.py#L91)
+
+```
+# translation varibale
+translation = translate(message,'',to)
 ```
 # Additional Commands
 
@@ -100,4 +109,3 @@ Sends a message translated according to form "to-from", where "from" isthe defau
 Unload the google-translator.py script then reload the python module. 
 
 Directly reloading google-tranlator.py script invokes multiple instances of translate module.
-

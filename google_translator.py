@@ -106,9 +106,13 @@ def worker_hook_tr(message, _from=default_from, to=default_to):
 
 
 # "!!" translate your message and send to server
-def worker_hook_str(context, message, _from=default_from, to=default_to):
+def worker_hook_str(context, message, _from=default_from, to=default_to, user_mention=""):
+    # user mention
+    if message[:1] == '@' :
+        user_mention = message.split(' ',1)[0] + ' '
+        message = message.split(' ',1)[1]
     # translate message
-    final_text = translate(message, to, _from)
+    final_text = user_mention + translate(message, to, _from)
     # print and send translated message to server
     context.command('SAY ' + final_text)
 

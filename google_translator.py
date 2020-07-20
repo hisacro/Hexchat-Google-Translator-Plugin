@@ -110,7 +110,7 @@ def worker_hook_tr(message, _from=default_from, to=default_to):
 def worker_hook_str(context, message, _from=default_from, to=default_to, user_mention=""):
     # user mention
     if message[:1] == '@' :
-        user_mention = message.split(' ',1)[0] + ' '
+        user_mention = message.split(' ',1)[0][1:] + ' '
         message = message.split(' ',1)[1]
     # translate message
     final_text = user_mention + translate(message, to, _from)

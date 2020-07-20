@@ -65,8 +65,8 @@ nein
 
 # user_mention exception when input starts with !!@
 !!@chair123, this should work
-# output to server
-@chair123, das sollte funktionieren
+# output to server, chair123 is not translated
+chair123, das sollte funktionieren
 ```
 
 For translating the message when user or channel not in watchlist, star the message with "@@" this will use the default source and target language. 
